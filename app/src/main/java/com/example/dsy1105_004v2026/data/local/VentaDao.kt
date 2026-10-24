@@ -8,9 +8,15 @@ interface VentaDao {
     @Query("SELECT * FROM ventas ORDER BY id DESC")
     fun obtenerTodasLasVentas(): Flow<List<VentaEntity>>
 
+    @Query("SELECT * FROM ventas WHERE id = :id LIMIT 1")
+    suspend fun obtenerVentaPorId(id: Int): VentaEntity?
+
     @Query("SELECT COUNT(*) FROM ventas WHERE codigoAutorizacion = :codigo")
     suspend fun existeCodigoAutorizacion(codigo: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarVenta(venta: VentaEntity)
+
+    @Update
+    suspend fun actualizarVenta(venta: VentaEntity)
 }

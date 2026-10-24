@@ -2,9 +2,4 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-<<<<<<< HEAD
-    alias(libs.plugins.kotlin.compose) apply false
-=======
-    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
->>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
 }

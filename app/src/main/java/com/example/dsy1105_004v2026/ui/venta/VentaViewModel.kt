@@ -17,6 +17,27 @@ class VentaViewModel(private val repository: VentaRepository) : ViewModel() {
 
     val listaVentas = repository.todasLasVentas
 
+    fun cargarVentaParaEdicion(id: Int) {
+        viewModelScope.launch {
+            val venta = repository.obtenerVentaPorId(id)
+            if (venta != null) {
+                _uiState.update {
+                    it.copy(
+                        id = venta.id,
+                        tipoServicio = venta.tipoServicio,
+                        fechaOperacion = venta.fechaOperacion,
+                        cliente = venta.cliente,
+                        monto = venta.monto.toString(),
+                        codigoAutorizacion = venta.codigoAutorizacion,
+                        respaldoUri = venta.respaldoUri,
+                        estado = venta.estado,
+                        observaciones = venta.observaciones
+                    )
+                }
+            }
+        }
+    }
+
     fun onTipoServicioChange(valor: String) = _uiState.update { it.copy(tipoServicio = valor, tipoServicioError = null) }
     fun onFechaChange(valor: String) = _uiState.update { it.copy(fechaOperacion = valor, fechaError = null) }
     fun onClienteChange(valor: String) = _uiState.update { it.copy(cliente = valor, clienteError = null) }

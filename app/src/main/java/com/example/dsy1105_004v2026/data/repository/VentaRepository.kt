@@ -7,9 +7,15 @@ import kotlinx.coroutines.flow.Flow
 class VentaRepository(private val ventaDao: VentaDao) {
     val todasLasVentas: Flow<List<VentaEntity>> = ventaDao.obtenerTodasLasVentas()
 
+    suspend fun obtenerVentaPorId(id: Int): VentaEntity? = ventaDao.obtenerVentaPorId(id)
+
     suspend fun existeCodigo(codigo: String): Boolean = ventaDao.existeCodigoAutorizacion(codigo) > 0
 
     suspend fun guardarVenta(venta: VentaEntity) {
-        ventaDao.insertarVenta(venta)
+        if (venta.id == 0) {
+            ventaDao.insertarVenta(venta)
+        } else {
+            ventaDao.actualizarVenta(venta)
+        }
     }
 }
