@@ -9,7 +9,8 @@ class VentaRepository(private val ventaDao: VentaDao) {
 
     suspend fun obtenerVentaPorId(id: Int): VentaEntity? = ventaDao.obtenerVentaPorId(id)
 
-    suspend fun existeCodigo(codigo: String): Boolean = ventaDao.existeCodigoAutorizacion(codigo) > 0
+    suspend fun existeCodigo(codigo: String, id: Int): Boolean =
+        ventaDao.existeCodigoAutorizacion(codigo, id) > 0
 
     suspend fun guardarVenta(venta: VentaEntity) {
         if (venta.id == 0) {

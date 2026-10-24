@@ -11,8 +11,8 @@ interface VentaDao {
     @Query("SELECT * FROM ventas WHERE id = :id LIMIT 1")
     suspend fun obtenerVentaPorId(id: Int): VentaEntity?
 
-    @Query("SELECT COUNT(*) FROM ventas WHERE codigoAutorizacion = :codigo")
-    suspend fun existeCodigoAutorizacion(codigo: String): Int
+    @Query("SELECT COUNT(*) FROM ventas WHERE codigoAutorizacion = :codigo AND id != :id")
+    suspend fun existeCodigoAutorizacion(codigo: String, id: Int): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarVenta(venta: VentaEntity)

@@ -60,13 +60,15 @@ class VentaViewModel(private val repository: VentaRepository) : ViewModel() {
             val montoDouble = state.monto.toDoubleOrNull()
             val montoErr = when {
                 state.monto.isBlank() -> "El monto es obligatorio"
-                montoDouble == null || montoDouble <= 0 -> "Debe ser un número mayor a 0"
+                montoDouble == null || montoDouble.isNaN() || montoDouble.isInfinite() || montoDouble <= 0 ->
+                    "Debe ser un número mayor a 0"
                 else -> null
             }
 
-            val codigoExiste = if (state.id == 0) repository.existeCodigo(state.codigoAutorizacion) else false
+            val codigo = state.codigoAutorizacion.trim()
+            val codigoExiste = codigo.isNotBlank() && repository.existeCodigo(codigo, state.id)
             val codigoErr = when {
-                state.codigoAutorizacion.isBlank() -> "El código de autorización es obligatorio"
+                codigo.isBlank() -> "El código de autorización es obligatorio"
                 codigoExiste -> "El código de autorización ya existe"
                 else -> null
             }
@@ -91,7 +93,7 @@ class VentaViewModel(private val repository: VentaRepository) : ViewModel() {
                 fechaOperacion = state.fechaOperacion,
                 cliente = state.cliente,
                 monto = montoDouble!!,
-                codigoAutorizacion = state.codigoAutorizacion,
+                codigoAutorizacion = codigo,
                 respaldoUri = state.respaldoUri,
                 estado = state.estado,
                 observaciones = state.observaciones
