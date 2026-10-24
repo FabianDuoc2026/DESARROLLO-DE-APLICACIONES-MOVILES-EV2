@@ -1,9 +1,15 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+<<<<<<< HEAD
     alias(libs.plugins.kotlin.compose)
 }
 
+=======
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
+    kotlin("kapt")
+}
+>>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
 android {
     namespace = "com.example.dsy1105_004v2026"
     compileSdk = 36
@@ -64,4 +70,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+<<<<<<< HEAD
+=======
+
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+>>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
 }

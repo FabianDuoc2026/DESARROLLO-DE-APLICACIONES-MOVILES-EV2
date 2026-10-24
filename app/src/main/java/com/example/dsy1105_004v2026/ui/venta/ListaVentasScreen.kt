@@ -11,12 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+<<<<<<< HEAD
 import com.example.dsy1105_004v2026.viewmodel.VentaViewModel
+=======
+import com.example.dsy1105_004v2026.data.local.VentaEntity
+>>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaVentasScreen(
     viewModel: VentaViewModel,
+<<<<<<< HEAD
     onNavegarFormulario: (Int) -> Unit
 ) {
     val ventas by viewModel.listaVentas.collectAsState()
@@ -84,9 +89,75 @@ fun ListaVentasScreen(
                                 }
                             }
                         }
+=======
+    onNavegarAFormulario: () -> Unit
+) {
+    val ventas by viewModel.listaVentas.collectAsState(initial = emptyList())
+
+    Scaffold(
+        topBar = { TopAppBar(title = { Text("Histórico de Ventas") }) },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onNavegarAFormulario) {
+                Icon(Icons.Default.Add, contentDescription = "Nueva Venta")
+            }
+        }
+    ) { innerPadding ->
+        if (ventas.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("No hay ventas registradas localmente.")
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(ventas, key = { it.id }) { venta ->
+                    AnimatedVisibility(
+                        visible = true,
+                        enter = fadeIn() + expandVertically()
+                    ) {
+                        ItemVentaCard(venta = venta)
+>>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
                     }
                 }
             }
         }
     }
+<<<<<<< HEAD
+=======
+}
+
+@Composable
+fun ItemVentaCard(venta: VentaEntity) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = venta.tipoServicio, style = MaterialTheme.typography.titleMedium)
+                AssistChip(onClick = {}, label = { Text(venta.estado) })
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = "Cliente: ${venta.cliente}")
+            Text(text = "Código Autorización: ${venta.codigoAutorizacion}")
+            Text(
+                text = "Monto: $${venta.monto}",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+>>>>>>> 1ece1f0 (feat: estructura base, Room, MVVM, VentaViewModel y VentaFormScreen)
 }
