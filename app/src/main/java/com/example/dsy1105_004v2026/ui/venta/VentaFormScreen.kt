@@ -14,6 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import java.util.Calendar
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +26,21 @@ fun VentaFormScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview()
+    ) { bitmap ->
+        if (bitmap != null) {
+            viewModel.onRespaldoChange("respaldo_capturado_${System.currentTimeMillis()}.jpg")
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            cameraLauncher.launch(null)
+        }
+    }
 
     val calendar = Calendar.getInstance()
     val datePickerDialog = DatePickerDialog(
@@ -126,6 +144,15 @@ fun VentaFormScreen(
                 leadingIcon = { Icon(Icons.Default.Notes, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth()
             )
+
+            OutlinedButton(
+                onClick = { permissionLauncher.launch(Manifest.permission.CAMERA) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Default.CameraAlt, contentDescription = "Cámara")
+                Spacer(Modifier.width(8.dp))
+                Text("Capturar Respaldo Fotográfico")
+            }
 
             AnimatedVisibility(visible = state.respaldoUri != null) {
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {

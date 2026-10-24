@@ -45,6 +45,9 @@ class VentaViewModel(private val repository: VentaRepository) : ViewModel() {
     fun onCodigoChange(valor: String) = _uiState.update { it.copy(codigoAutorizacion = valor, codigoError = null) }
     fun onRespaldoCaptured(uri: String) = _uiState.update { it.copy(respaldoUri = uri) }
     fun onObservacionesChange(valor: String) = _uiState.update { it.copy(observaciones = valor) }
+    fun onRespaldoChange(uri: String) {
+        _uiState.value = _uiState.value.copy(respaldoUri = uri)
+    }
 
     fun guardarVenta() {
         viewModelScope.launch {
